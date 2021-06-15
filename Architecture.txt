@@ -179,6 +179,9 @@ License Master Goes Down -----------
 
 indexing continues -- searching blocked 
 
+
+https://splunkonbigdata.com/2018/09/25/what-happens-when-license-master-goes-down/
+
 -------------------------------------------------------
 
 License Expires ----
@@ -186,3 +189,5 @@ License Expires ----
 indexing continues -- searching blocked
 
 ----------------------------------------------------------------
+
+
