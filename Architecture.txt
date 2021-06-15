@@ -1,0 +1,188 @@
+>>>>>>>>>> Splunk Architecture <<<<<<<<<<<<<<<
+1) Universal Forwarder ( UF ) --- Splunk Universal Forwarder Package 
+CLI ----
+
+Splunk Enterprise Package --- CLI + GUI 
+2) Heavy Forwarder ( HF )
+
+a) Parsing 
+
+i/o -
+
+this is ayan
+this is amitabh
+this is khalid 
+this is pragya
+
+
+
+
+
+this is ayan
+
+this is amitabh
+
+this is khalid 
+
+this is pragya
+
+-----
+this is ayan, he is from kolkata
+this is amitabh, he is from mumbai
+this is khalid, he is from chennai
+
+
+
+this is ayan
+
+he is from kolkata
+
+this is amitabh
+
+he is from mumbai
+
+this is khalid
+
+he is from chennai
+
+masking -----
+
+this is ayan and his acc number is 139128321836
+this is amitabh and his acc number is 029752093572957
+
+
+
+this is ayan and his acc number is xxxx1836
+
+this is amitabh and his acc number is xxxx2957
+
+
+b) Filtering 
+
+this is ayan he logged in from 194.23.45.67
+this is yogita and she logged out from 198.56.78.45
+this is amitabh he logged in from 194.23.45.68
+
+
+this is ayan he logged in from 194.23.45.67
+
+this is amitabh he logged in from 194.23.45.68
+
+
+------------
+
+this is ayan he logged in from 194.23.45.67
+this is yogita and she logged out from 198.56.78.45
+this is amitabh he logged in from 194.23.45.68
+
+logged_in --
+this is ayan he logged in from 194.23.45.67
+
+this is amitabh he logged in from 194.23.45.68
+
+
+logged_out --
+this is yogita and she logged out from 198.56.78.45
+
+3) Indexer ( IDX )
+
+indexes ---
+
+
+apple --- cisco 
+
+facebook -- cisco 
+
+JPMC --- cisco 
+
+WB -- cisco 
+------------------------------
+
+apple_cisco
+
+facebook_cisco 
+
+
+index=facebook_cisco ---- no results found 
+
+-----------------
+
+---- switches_log 
+
+--- vpnlog 
+
+
+ayan001cisco --- user ---- cisco ----- apple_cisco,facebook_cisco
+
+------------------
+
+
+metadata ------ host ----- hostname or the ip address of the application server ( 10.56.78.90, ladap001,ladap001.boa.com )
+                source ---- actual path of the data ( /var/log/application/cisco/vpn.log , C:\Program Files\Chrome\history.txt )
+				sourcetype --- logical segregation of the data ---- 
+
+
+cisco ---- 
+                     /var/log/application/cisco/vpn.log   --- vpnlog
+					 /var/log/application/cisco/vpn1.log
+					 /var/log/application/cisco/vpn_12_02_2021.txt 
+					 
+					 /var/log/application/cisco/switches.log  -- switches_log
+					 /var/log/application/cisco/switches1.log
+
+
+index=cisco sourcetype=vpnlog 
+
+4) Search Head ( SH )
+
+
+5) Deployment Server ( DS )
+
+
+
+6) License Master ( LM )
+
+License Stacking ----
+5GB + 100 GB === 105 GB + 200 Gb == 305 GB 
+
+License Pooling ----
+
+
+License_Pool_A  --- 290 GB -- Indexers
+
+License_Pool_B --- 15 GB --- SH,DS 
+
+----------------------------
+
+ 5 time leverage in rolling period of 30 days 
+ 
+15th june------ 1
+16 -- 2
+17 -- 3
+18 - 4
+23 - 5
+27 - >5
+
+14th July 
+
+
+<6.5 --- Splunk Software  -- Enforcement License ----- indexing continues -- searching blocked 
+
+>=6.5 ---- Splunk Software --- No-Enforcement License ---- indexing continues --- searching continues ---- splunk can take some legal action 
+ 
+https://splunkonbigdata.com/2020/07/31/splunk-licensing-enforcement-vs-no-enforcement/
+
+------------------
+License Master Goes Down ----------- 
+
+> 72 hours 
+
+indexing continues -- searching blocked 
+
+-------------------------------------------------------
+
+License Expires ----
+
+indexing continues -- searching blocked
+
+----------------------------------------------------------------
