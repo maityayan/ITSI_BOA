@@ -1,12 +1,23 @@
-
-
 192.168.17.224 -- ldap
 192.168.18.53 --- web 
 
 
-Web -------
-   ------- ldap
-   ------- web 
-   
-   
-   
+free disk 
+
+----- 90 --- low
+----- 70 ---- high 
+----- 50 ---- critical 
+
+Cpu_used ----
+------ 50 --- low 
+----- 70 --- medium
+---- 80 ---- high 
+---- 90 ---- critical 
+
+
+Cpu_Idle
+
+------ 50 --- low 
+----- 70 --- medium
+---- 80 ---- high 
+---- 90 ---- critical 
