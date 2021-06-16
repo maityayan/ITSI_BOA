@@ -1,0 +1,5 @@
+search performance 
+summary index 
+report acceleration
+| tstats 
+retaintion differently
