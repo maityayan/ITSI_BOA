@@ -1,0 +1,6 @@
+index=main host=windows* 
+| fields host 
+| dedup host 
+| table host 
+| eval dns=host.".boa.com",region=if(host="windows-01","India","USA") , 
+type=case(host like "windows-01","Middleware",host like "Windows-02","AD",host like "Windows-03","Master AD") , owner="Western Union", Entity_Title=host
