@@ -1,0 +1,3 @@
+index=main host=windows* sourcetype="PerfmonMk:Memory" OR sourcetype="PerfmonMk:CPU" 
+| fields host,"%_Idle_Time","Interrupts/sec",Available_MBytes,"Page_Writes/sec","Page_Reads/sec","Page_Faults/sec" 
+| eval "%_USED_CPU"=100-'%_Idle_Time'
