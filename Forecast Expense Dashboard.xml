@@ -4,13 +4,15 @@
     <input type="multiselect" token="area_token" searchWhenChanged="true">
       <label>Select Areas</label>
       <choice value="*">All</choice>
-      <choice value="Emarketing">Emarketing</choice>
-      <choice value="Food">Food</choice>
-      <choice value="Education">Education</choice>
       <default>*</default>
       <valuePrefix>Area="</valuePrefix>
       <valueSuffix>"</valueSuffix>
       <delimiter> OR </delimiter>
+      <fieldForLabel>Area</fieldForLabel>
+      <fieldForValue>Area</fieldForValue>
+      <search>
+        <query>| inputlookup user_credit_details.csv | fields Area | dedup Area</query>
+      </search>
     </input>
     <input type="dropdown" token="day_token" searchWhenChanged="true">
       <label>Select Future Days</label>
