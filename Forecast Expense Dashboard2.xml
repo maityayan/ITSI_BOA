@@ -1,0 +1,70 @@
+<form>
+  <label>User Credit Card Expences</label>
+  <fieldset submitButton="false">
+    <input type="dropdown" token="day_token" searchWhenChanged="true">
+      <label>Select Future Days</label>
+      <default>5</default>
+      <fieldForLabel>day</fieldForLabel>
+      <fieldForValue>day</fieldForValue>
+      <search>
+        <query>|inputlookup days_list.csv</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+    <input type="multiselect" token="user_tok" searchWhenChanged="true">
+      <label>Select Users ( max 5 )</label>
+      <default>User1,User3,User2,User4,User5</default>
+      <valuePrefix>"</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter>,</delimiter>
+      <fieldForLabel>Username</fieldForLabel>
+      <fieldForValue>Username</fieldForValue>
+      <search>
+        <query>| inputlookup user_credit_details.csv | fields Username | dedup Username</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Education</title>
+      <viz type="Splunk_ML_Toolkit.ForecastViz">
+        <search>
+          <query>| inputlookup user_credit_details.csv | search Area="Education" | eval Date="01-".'Date'." 00:00:00.00" | eval aa=strptime(Date,"%d-%b-%y %H:%M:%S.%3N") | eval "_time"=strftime(aa,"%d-%m-%y %H:%M:%S.%3N") | chart sum(Amount_Spent) over _time by Username
+| fit StateSpaceForecast $user_tok$ output_metadata=true forecast_k=$day_token$ holdback=0 into "_exp_draft_0d39fbd07cc647d5ade6915e5da6413f"
+| `smartforecastviz($user_tok$)`</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Food</title>
+      <viz type="Splunk_ML_Toolkit.ForecastViz">
+        <search>
+          <query>| inputlookup user_credit_details.csv | search Area="Food" | eval Date="01-".'Date'." 00:00:00.00" | eval aa=strptime(Date,"%d-%b-%y %H:%M:%S.%3N") | eval "_time"=strftime(aa,"%d-%m-%y %H:%M:%S.%3N") | chart sum(Amount_Spent) over _time by Username
+| fit StateSpaceForecast $user_tok$ output_metadata=true forecast_k=$day_token$ holdback=0 into "_exp_draft_0d39fbd07cc647d5ade6915e5da6413f"
+| `smartforecastviz($user_tok$)`</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </viz>
+    </panel>
+  </row>
+</form>
