@@ -1,0 +1,2 @@
+| inputlookup user_credit_details.csv | stats sum(Amount_Spent) as amount by Area,Date,Username
+| inputlookup user_credit_details.csv | chart sum(Amount_Spent) over Date by Username | table Date User1
