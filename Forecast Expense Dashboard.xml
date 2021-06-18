@@ -1,0 +1,46 @@
+<form>
+  <label>User Credit Card Expences</label>
+  <fieldset submitButton="false">
+    <input type="multiselect" token="area_token" searchWhenChanged="true">
+      <label>Select Areas</label>
+      <choice value="*">All</choice>
+      <choice value="Emarketing">Emarketing</choice>
+      <choice value="Food">Food</choice>
+      <choice value="Education">Education</choice>
+      <default>*</default>
+      <valuePrefix>Area="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+    </input>
+    <input type="dropdown" token="day_token" searchWhenChanged="true">
+      <label>Select Future Days</label>
+      <default>5</default>
+      <fieldForLabel>day</fieldForLabel>
+      <fieldForValue>day</fieldForValue>
+      <search>
+        <query>|inputlookup days_list.csv</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <viz type="Splunk_ML_Toolkit.ForecastViz">
+        <search>
+          <query>| inputlookup user_credit_details.csv | search $area_token$ | eval Date="01-".'Date'." 00:00:00.00" | eval aa=strptime(Date,"%d-%b-%y %H:%M:%S.%3N") | eval "_time"=strftime(aa,"%d-%m-%y %H:%M:%S.%3N") | chart sum(Amount_Spent) over _time by Username
+| fit StateSpaceForecast "User1" "User2" "User3" "User4" "User5"  output_metadata=true forecast_k=$day_token$ holdback=0 into "_exp_draft_0d39fbd07cc647d5ade6915e5da6413f"
+| `smartforecastviz("User1", "User2", "User3", "User4", "User5")`</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </viz>
+    </panel>
+  </row>
+</form>
