@@ -1,0 +1,7 @@
+(index="itsi_summary" scoretype="service_health" (source=service_health_monitor OR source=service_health_score_backfill)) alert_severity=critical  | rename serviceid as itsi_service_id 
+| rename kpiid as itsi_kpi_id 
+| rename kpi as kpi_name 
+| lookup service_kpi_lookup _key as itsi_service_id OUTPUT title 
+| rename title as service_name | search service_name="*web*" AND service_name=*ayan*
+| eval actual_time=_time 
+| convert ctime(actual_time) as actual_time
